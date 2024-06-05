@@ -15,6 +15,13 @@ module.exports = {
         "primary-500": "#001b3a",
         "secondary-400": "#ffd700",
         "secondary-500": "#ffffe0",
+        secondary: {
+          DEFAULT: colors.neutral[200],
+          hover: colors.neutral[300],
+          border: colors.neutral[400],
+          text: colors.neutral[800],
+          ["dark-hover"]: colors.neutral[900]
+        }
       },
       backgroundImage: (theme) => ({
         "gradient-dark":
