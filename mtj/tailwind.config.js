@@ -1,3 +1,5 @@
+const colors = require("tailwindcss/colors");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -20,8 +22,8 @@ module.exports = {
           hover: colors.neutral[300],
           border: colors.neutral[400],
           text: colors.neutral[800],
-          ["dark-hover"]: colors.neutral[900]
-        }
+          ["dark-hover"]: colors.neutral[900],
+        },
       },
       backgroundImage: (theme) => ({
         "gradient-dark":
@@ -33,9 +35,10 @@ module.exports = {
       },
     },
     screens: {
-      xs: "480px",
+      xs: "0px",
       sm: "768px",
       md: "1060px",
+      lg: "1440px"
     },
   },
   plugins: [],
