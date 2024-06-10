@@ -11,12 +11,11 @@ body,
   min-height: 100vh;
   width: 100%;
   font-family: "DM Sans", sans-serif;
-  background: rgb(0, 10, 31);
   background: linear-gradient(
     90deg,
     rgba(0, 10, 31, 1) 0%,
     rgba(0, 9, 28, 1) 31%,
     rgba(0, 21, 47, 1) 100%
   );
-  @apply text-gray-500;
+  @apply text-white;
 }

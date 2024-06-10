@@ -15,20 +15,18 @@ module.exports = {
         "primary-300": "#00316e",
         "primary-400": "#00224b",
         "primary-500": "#001b3a",
-        "secondary-400": "#ffd700",
-        "secondary-500": "#ffffe0",
+        "secondary-100": "#ffd700",
+        "secondary-200": "#ffffe0",
+        "secondary-300": "#DAA520",
         secondary: {
           DEFAULT: colors.neutral[200],
           hover: colors.neutral[300],
           border: colors.neutral[400],
           text: colors.neutral[800],
-          ["dark-hover"]: colors.neutral[900],
+          ["dark-hover"]: "#001c57",
+          ["light-hover"]: "#ffd700",
         },
       },
-      backgroundImage: (theme) => ({
-        "gradient-dark":
-          "linear-gradient(90deg, rgba(0,10,31,1) 0%, rgba(0,9,28,1) 31%, rgba(0,21,47,1) 100%);",
-      }),
       fontFamily: {
         dmsans: ["DM Sans", "sans-serif"],
         montserrat: ["Montserrat", "sans-serif"],
@@ -38,7 +36,7 @@ module.exports = {
       xs: "0px",
       sm: "768px",
       md: "1060px",
-      lg: "1440px"
+      lg: "1440px",
     },
   },
   plugins: [],
