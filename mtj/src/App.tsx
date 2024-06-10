@@ -1,15 +1,26 @@
-import { Header } from "@/layout/Header.tsx";
-import { Nav } from "@/layout/Navigation.tsx";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Layout } from "@/components/layout/Layout";
+import DashboardPage from "@/pages/dashboard/DashboardPage";
+import JournalPage from "@/pages/journal/JournalPage.tsx";
+import NewsPage from "./pages/news/NewsPage";
+import CalendarPage from "./pages/calendar/CalendarPage";
+import MarketPage from "./pages/market/MarketPage";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="bg-primary-500 flex max-h-screen flex-col">
-      <Header />
-      <div className="flex-grow-1 grid grid-cols-[auto,1fr] overflow-auto ">
-        <Nav />
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<DashboardPage />} />
+          <Route path="journal" element={<JournalPage />} />
+          <Route path="news" element={<NewsPage />} />
+          <Route path="calendar" element={<CalendarPage />} />
+          <Route path="market" element={<MarketPage />} />
+        </Route>
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

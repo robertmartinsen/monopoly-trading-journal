@@ -9,6 +9,7 @@ export const buttonStyles = cva(["transition-colors"], {
       icon: ["bg-gray-50"],
       ghost: ["hover:bg-secondary"],
       dark: ["bg-primary-500", "hover:bg-secondary-dark-hover"],
+      light: ["bg-secondary-300", "hover:bg-secondary-light-hover"],
     },
     size: {
       default: ["rounded", "p-2", "items-center"],
