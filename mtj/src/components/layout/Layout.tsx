@@ -8,7 +8,7 @@ export const Layout: React.FC = () => {
     <div className="flex min-h-screen flex-col">
       <Header />
       <div className="grid flex-grow grid-cols-[auto,1fr] overflow-auto">
-        <Nav />
+
         <main className="p-4">
           <Outlet />
         </main>

@@ -1,7 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
-import DashboardPage from "@/pages/dashboard/DashboardPage";
+import Login from "@/pages/auth/login/Login.tsx";
+import Home from "@/pages/home/Home.tsx";
 import JournalPage from "@/pages/journal/JournalPage.tsx";
 import NewsPage from "./pages/news/NewsPage";
 import CalendarPage from "./pages/calendar/CalendarPage";
@@ -12,7 +13,8 @@ const App: React.FC = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<DashboardPage />} />
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
           <Route path="journal" element={<JournalPage />} />
           <Route path="news" element={<NewsPage />} />
           <Route path="calendar" element={<CalendarPage />} />
