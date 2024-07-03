@@ -5,8 +5,8 @@ import { NavLink } from "react-router-dom";
 
 export function Header() {
   return (
-    <div className="flex justify-between gap-10 bg-white pb-4 pt-4 lg:gap-20">
-      <div className={`ml-4 flex-shrink-0 items-center`}>
+    <div className="flex justify-between gap-10 bg-white pb-4 pt-4 lg:gap-20 ">
+      <div className={`ml-4 flex-shrink-0 items-center flex justify-center`}>
         <a href="/">
           <img src={Logo} />
         </a>
