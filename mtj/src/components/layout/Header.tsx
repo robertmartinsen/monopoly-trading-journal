@@ -17,7 +17,7 @@ export function Header() {
             Sign In
           </Button>
         </NavLink>
-        <NavLink to="/SignUpPage">
+        <NavLink to="/Signup">
           <Button
             variant="dark"
             className="mr-4 text-white xs:hidden sm:hidden md:flex lg:flex"

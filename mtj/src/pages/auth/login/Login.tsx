@@ -1,3 +1,4 @@
+import { useState } from "react";
 import auth from "@/assets/auth.svg";
 import Logo from "@/assets/logo.svg";
 import Google from "@/assets/google.svg";
@@ -5,12 +6,17 @@ import { NavLink } from "react-router-dom";
 import { Button } from "@/components/Button";
 
 export default function LoginPage() {
+  const [focusedInput, setFocusedInput] = useState<string>("email");
+
+  const handleFocus = (input: string) => {
+    setFocusedInput(input);
+  };
   return (
     <section className="min-h-screen">
       <div className="flex justify-center xs:mt-5 sm:mt-5 md:mt-20">
         <div className="flex items-center justify-center bg-white shadow-2xl shadow-black xs:w-full sm:w-3/5 md:w-4/5 lg:w-3/6">
           <div className="flex flex-col p-5 md:w-1/2">
-            <img src={Logo} alt="" className="size-32" />
+            <img src={Logo} className="size-32" />
             <h1 className="text-2xl font-bold tracking-wide text-primary-100">
               Hello,
             </h1>
@@ -19,34 +25,40 @@ export default function LoginPage() {
             </h2>
             <form className="bg-gray" action="">
               <div className="mt-5 border">
-                <div className="border-l-4 border-primary-100">
+                <div
+                  className={` ${focusedInput === "email" ? "border-l-4 border-primary-100" : ""}`}
+                >
                   <div className="ml-4 p-2">
                     <p className="text-black">Email Address</p>
                     <input
                       className="w-full pb-2 pt-2 text-black focus:outline-none"
                       type="text"
                       placeholder="name@email.com"
+                      onFocus={() => handleFocus("email")}
                     />
                   </div>
                 </div>
               </div>
               <div className="border-x border-b">
-                <div className="">
+                <div
+                  className={` ${focusedInput === "password" ? "border-l-4 border-primary-100" : ""}`}
+                >
                   <div className="ml-4 p-2">
                     <p className="text-black">Password</p>
                     <input
                       className="w-full pb-2 pt-2 text-black focus:outline-none"
                       type="password"
                       placeholder="Enter password"
+                      onFocus={() => handleFocus("password")}
                     />
                   </div>
                 </div>
               </div>
               <NavLink to="/resetPassword" className="mt-2 flex justify-end">
-                <small className="text-gray">Forgot password?</small>
+                <small className="text-gray-500">Forgot password?</small>
               </NavLink>
             </form>
-            <div className="flex space-x-5 pb-10">
+            <div className="mt-4 flex space-x-5 pb-10">
               <div>
                 <Button
                   variant="dark"
@@ -56,12 +68,14 @@ export default function LoginPage() {
                 </Button>
               </div>
               <div>
-                <Button
-                  variant="ghost"
-                  className="border-2 border-secondary-300 px-3 font-bold text-secondary-300"
-                >
-                  Create Account
-                </Button>
+                <NavLink to="/Signup">
+                  <Button
+                    variant="ghost"
+                    className="border-2 border-secondary-300 px-3 font-bold text-secondary-300"
+                  >
+                    Create Account
+                  </Button>
+                </NavLink>
               </div>
             </div>
             <div className="mt-5 grid grid-cols-3 items-center text-gray-400">
