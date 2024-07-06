@@ -1,16 +1,38 @@
 import { useState } from "react";
-import auth from "@/assets/auth.svg";
+import { useNavigate } from "react-router-dom";
+import authImg from "@/assets/auth.svg";
 import Logo from "@/assets/logo.svg";
 import Google from "@/assets/google.svg";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/Button";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase/firebase";
 
 export default function LoginPage() {
   const [focusedInput, setFocusedInput] = useState<string>("email");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleFocus = (input: string) => {
     setFocusedInput(input);
   };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/dashboard");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred");
+      }
+    }
+  };
+
   return (
     <section className="min-h-screen">
       <div className="flex justify-center xs:mt-5 sm:mt-5 md:mt-20">
@@ -23,32 +45,32 @@ export default function LoginPage() {
             <h2 className="text-4xl font-extrabold text-secondary-300">
               Welcome!
             </h2>
-            <form className="bg-gray" action="">
+            <form className="bg-gray" onSubmit={handleLogin}>
               <div className="mt-5 border">
-                <div
-                  className={` ${focusedInput === "email" ? "border-l-4 border-primary-100" : ""}`}
-                >
+                <div className={`${focusedInput === "email" ? "border-l-4 border-primary-100" : ""}`}>
                   <div className="ml-4 p-2">
                     <p className="text-black">Email Address</p>
                     <input
                       className="w-full pb-2 pt-2 text-black focus:outline-none"
                       type="text"
                       placeholder="name@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       onFocus={() => handleFocus("email")}
                     />
                   </div>
                 </div>
               </div>
               <div className="border-x border-b">
-                <div
-                  className={` ${focusedInput === "password" ? "border-l-4 border-primary-100" : ""}`}
-                >
+                <div className={`${focusedInput === "password" ? "border-l-4 border-primary-100" : ""}`}>
                   <div className="ml-4 p-2">
                     <p className="text-black">Password</p>
                     <input
                       className="w-full pb-2 pt-2 text-black focus:outline-none"
                       type="password"
                       placeholder="Enter password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       onFocus={() => handleFocus("password")}
                     />
                   </div>
@@ -57,18 +79,20 @@ export default function LoginPage() {
               <NavLink to="/resetPassword" className="mt-2 flex justify-end">
                 <small className="text-gray-500">Forgot password?</small>
               </NavLink>
+              {error && <p className="text-red-500">{error}</p>}
             </form>
             <div className="mt-4 flex space-x-5 pb-10">
               <div>
                 <Button
                   variant="dark"
                   className="border-2 border-primary-100 px-6"
+                  type="submit"
                 >
                   Sign in
                 </Button>
               </div>
               <div>
-                <NavLink to="/Signup">
+                <NavLink to="/signup">
                   <Button
                     variant="ghost"
                     className="border-2 border-secondary-300 px-3 font-bold text-secondary-300"
@@ -91,7 +115,7 @@ export default function LoginPage() {
             </div>
           </div>
           <div className="hidden h-full w-1/2 items-center justify-center bg-gradient-to-r from-primary-300 to-primary-200 md:flex">
-            <img src={auth} alt="Auth illustration" className="w-full" />
+            <img src={authImg} alt="Auth illustration" className="w-full" />
           </div>
         </div>
       </div>

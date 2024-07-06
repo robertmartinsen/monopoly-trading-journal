@@ -1,30 +1,55 @@
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import Logo from "@/assets/logo.svg";
 import { Button } from "@/components/Button";
-import { NavLink } from "react-router-dom";
+import { signOut, User } from "firebase/auth";
+import { auth } from "@/firebase/firebase";
 
-export function Header() {
+interface HeaderProps {
+  user: User | null;
+}
+
+export const Header: React.FC<HeaderProps> = ({ user }) => {
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut(auth);
+    navigate("/");
+  };
+
   return (
-    <div className="flex justify-between gap-10 bg-white pb-4 pt-4 lg:gap-20 ">
-      <div className={`ml-4 flex-shrink-0 items-center flex justify-center`}>
+    <div className="flex justify-between gap-10 bg-white pb-4 pt-4 lg:gap-20">
+      <div className="ml-4 flex flex-shrink-0 items-center justify-center">
         <a href="/">
-          <img src={Logo} />
+          <img src={Logo} alt="Logo" />
         </a>
       </div>
       <div className="flex">
-        <NavLink to="/Login">
-          <Button className="mr-3 text-black xs:hidden sm:hidden md:flex lg:flex">
-            Sign In
-          </Button>
-        </NavLink>
-        <NavLink to="/Signup">
+        {user ? (
           <Button
-            variant="dark"
-            className="mr-4 text-white xs:hidden sm:hidden md:flex lg:flex"
+            className="mr-3 text-black xs:hidden sm:hidden md:flex lg:flex"
+            onClick={handleSignOut}
           >
-            Create Account
+            Sign Out
           </Button>
-        </NavLink>
+        ) : (
+          <>
+            <NavLink to="/login">
+              <Button className="mr-3 text-black xs:hidden sm:hidden md:flex lg:flex">
+                Sign In
+              </Button>
+            </NavLink>
+            <NavLink to="/signup">
+              <Button
+                variant="dark"
+                className="mr-4 text-white xs:hidden sm:hidden md:flex lg:flex"
+              >
+                Create Account
+              </Button>
+            </NavLink>
+          </>
+        )}
         <Button
           size="icon"
           variant="ghost"
@@ -35,4 +60,4 @@ export function Header() {
       </div>
     </div>
   );
-}
+};

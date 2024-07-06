@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import authImage from "@/assets/auth.svg";
 import Logo from "@/assets/logo.svg";
 import Google from "@/assets/google.svg";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/Button";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/firebase.js"; // Ensure the correct import
+import { auth } from "@/firebase/firebase";
 
 export default function SignupPage() {
   const [focusedInput, setFocusedInput] = useState<string>("email");
@@ -14,7 +14,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState<string>("");
   const [repeatPassword, setRepeatPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleFocus = (input: string) => {
     setFocusedInput(input);
@@ -28,9 +28,13 @@ export default function SignupPage() {
     }
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      history.push("/dashboard"); // Redirect to dashboard or any other page
+      navigate("/dashboard");
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred");
+      }
     }
   };
 
