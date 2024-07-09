@@ -6,13 +6,16 @@ import Google from "@/assets/google.svg";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/Button";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/firebase";
+import { auth } from "@/firebase/firebase.ts";
+import { validateEmail, validatePassword } from "@/utils/validation.ts";
 
 export default function LoginPage() {
   const [focusedInput, setFocusedInput] = useState<string>("email");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleFocus = (input: string) => {
@@ -21,14 +24,33 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const emailValidationError = validateEmail(email);
+    const passwordValidationError = validatePassword(password);
+
+    setEmailError(emailValidationError);
+    setPasswordError(passwordValidationError);
+
+    if (emailValidationError || passwordValidationError) {
+      return;
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("An unknown error occurred");
+    } catch (error: any) {
+      switch (error.code) {
+        case "auth/user-not-found":
+          setError("Email is not registered");
+          break;
+        case "auth/wrong-password":
+          setError("Password is incorrect");
+          break;
+        case "auth/invalid-email":
+          setError("Invalid email address");
+          break;
+        default:
+          setError("Invalid email or password");
       }
     }
   };
@@ -47,7 +69,9 @@ export default function LoginPage() {
             </h2>
             <form className="bg-gray" onSubmit={handleLogin}>
               <div className="mt-5 border">
-                <div className={`${focusedInput === "email" ? "border-l-4 border-primary-100" : ""}`}>
+                <div
+                  className={`${focusedInput === "email" ? "border-l-4 border-primary-100" : ""}`}
+                >
                   <div className="ml-4 p-2">
                     <p className="text-black">Email Address</p>
                     <input
@@ -58,11 +82,14 @@ export default function LoginPage() {
                       onChange={(e) => setEmail(e.target.value)}
                       onFocus={() => handleFocus("email")}
                     />
+                    {emailError && <p className="text-red-500">{emailError}</p>}
                   </div>
                 </div>
               </div>
               <div className="border-x border-b">
-                <div className={`${focusedInput === "password" ? "border-l-4 border-primary-100" : ""}`}>
+                <div
+                  className={`${focusedInput === "password" ? "border-l-4 border-primary-100" : ""}`}
+                >
                   <div className="ml-4 p-2">
                     <p className="text-black">Password</p>
                     <input
@@ -73,16 +100,20 @@ export default function LoginPage() {
                       onChange={(e) => setPassword(e.target.value)}
                       onFocus={() => handleFocus("password")}
                     />
+                    {passwordError && (
+                      <p className="text-red-500">{passwordError} </p>
+                    )}
                   </div>
                 </div>
               </div>
-              <NavLink to="/resetPassword" className="mt-2 flex justify-end">
-                <small className="text-gray-500">Forgot password?</small>
-              </NavLink>
+              <div className="mt-2 flex justify-end">
+                <Button className="text-xs text-red-600">
+                  <NavLink to="/resetPassword">Forgot password? </NavLink>
+                </Button>
+              </div>
+
               {error && <p className="text-red-500">{error}</p>}
-            </form>
-            <div className="mt-4 flex space-x-5 pb-10">
-              <div>
+              <div className="mt-4 flex space-x-5 pb-10">
                 <Button
                   variant="dark"
                   className="border-2 border-primary-100 px-6"
@@ -90,8 +121,6 @@ export default function LoginPage() {
                 >
                   Sign in
                 </Button>
-              </div>
-              <div>
                 <NavLink to="/signup">
                   <Button
                     variant="ghost"
@@ -101,7 +130,7 @@ export default function LoginPage() {
                   </Button>
                 </NavLink>
               </div>
-            </div>
+            </form>
             <div className="mt-5 grid grid-cols-3 items-center text-gray-400">
               <hr />
               <p className="text-center text-gray-400">OR</p>

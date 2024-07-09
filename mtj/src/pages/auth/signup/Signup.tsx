@@ -108,7 +108,7 @@ export default function SignupPage() {
               {error && <p className="text-red-500">{error}</p>}
               <div className="mt-2">
                 <NavLink to="/login">
-                  <small className="text-gray-500">
+                  <small className="text-red-600">
                     Already got an account?
                   </small>
                 </NavLink>
