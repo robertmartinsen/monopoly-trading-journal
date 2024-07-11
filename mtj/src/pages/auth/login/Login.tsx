@@ -5,7 +5,11 @@ import Logo from "@/assets/logo.svg";
 import Google from "@/assets/google.svg";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/Button";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { auth } from "@/firebase/firebase.ts";
 import { validateEmail, validatePassword } from "@/utils/validation.ts";
 
@@ -20,6 +24,20 @@ export default function LoginPage() {
 
   const handleFocus = (input: string) => {
     setFocusedInput(input);
+  };
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      navigate("/dashboard");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred");
+      }
+    }
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -137,7 +155,10 @@ export default function LoginPage() {
               <hr />
             </div>
             <div className="pb-10">
-              <Button className="mt-5 flex w-full items-center justify-center border bg-gray-200 text-sm font-semibold text-black hover:bg-gray-50">
+              <Button
+                onClick={handleGoogleSignIn}
+                className="mt-5 flex w-full items-center justify-center border bg-gray-200 text-sm font-semibold text-black hover:bg-gray-50"
+              >
                 <img src={Google} className="mr-3 w-8" />
                 Sign in with Google
               </Button>

@@ -5,8 +5,9 @@ import Logo from "@/assets/logo.svg";
 import Google from "@/assets/google.svg";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/Button";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider} from "firebase/auth";
 import { auth } from "@/firebase/firebase";
+import { validateEmail, validatePassword } from "@/utils/validation.ts";
 
 export default function SignupPage() {
   const [focusedInput, setFocusedInput] = useState<string>("email");
@@ -14,6 +15,9 @@ export default function SignupPage() {
   const [password, setPassword] = useState<string>("");
   const [repeatPassword, setRepeatPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [reapeatPasswordError, setRepeatPasswordError] = useState<string | null>(null)
   const navigate = useNavigate();
 
   const handleFocus = (input: string) => {
@@ -22,20 +26,47 @@ export default function SignupPage() {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== repeatPassword) {
-      setError("Passwords do not match");
-      return;
+
+    const emailValidationError = validateEmail(email)
+    const passwordValidationError = validatePassword(password)
+    const repeatPasswordValidationError = password !== repeatPassword ? "passwords do not match" : null;
+   
+    setEmailError(emailValidationError);
+    setPasswordError(passwordValidationError);
+    setRepeatPasswordError(repeatPasswordValidationError);
+
+    if (emailValidationError || passwordValidationError || repeatPasswordValidationError) {
+      return
     }
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("An unknown error occurred");
+    } catch (error: any) {
+      switch (error.code) {
+        case "auth/email-already-in-use":
+        setError("Email already in use");
+        break;
+        case "auth/invalid-email":
+        setError("Invalid email address");
+        break;
+        default:
+          setError("An unknown error occurred");
       }
     }
+
+    const handleGoogleSignIn = async () => {
+      const provider = new GoogleAuthProvider();
+      try {
+        await signInWithPopup(auth, provider);
+        navigate("/dashboard");
+      } catch(error) {
+        if (error instanceof Error) {
+          setError(error.message)
+      } else {
+        setError("An uknown error occurred")
+      }
+    } 
   };
 
   return (
@@ -68,6 +99,7 @@ export default function SignupPage() {
                       onChange={(e) => setEmail(e.target.value)}
                       onFocus={() => handleFocus("email")}
                     />
+                    {emailError && <p className="text-red-500">{emailError}</p>}
                   </div>
                 </div>
               </div>
@@ -85,6 +117,7 @@ export default function SignupPage() {
                       onChange={(e) => setPassword(e.target.value)}
                       onFocus={() => handleFocus("password")}
                     />
+                    {passwordError && <p className="text-red-500">{passwordError}</p>}
                   </div>
                 </div>
               </div>
@@ -102,6 +135,7 @@ export default function SignupPage() {
                       onChange={(e) => setRepeatPassword(e.target.value)}
                       onFocus={() => handleFocus("r-password")}
                     />
+                    {reapeatPasswordError && <p className="text-red-500">{reapeatPasswordError}</p>}
                   </div>
                 </div>
               </div>
@@ -129,7 +163,7 @@ export default function SignupPage() {
               <hr />
             </div>
             <div className="pb-10">
-              <Button className="mt-5 flex w-full items-center justify-center border bg-gray-200 text-sm font-semibold text-black hover:bg-gray-50">
+              <Button onClick={handleGoogleSignIn} className="mt-5 flex w-full items-center justify-center border bg-gray-200 text-sm font-semibold text-black hover:bg-gray-50">
                 <img src={Google} className="mr-3 w-8" alt="Google" />
                 Sign up with Google
               </Button>
@@ -139,4 +173,5 @@ export default function SignupPage() {
       </div>
     </section>
   );
+}
 }
