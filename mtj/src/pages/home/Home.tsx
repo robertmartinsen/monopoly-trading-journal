@@ -4,7 +4,7 @@ type Props = {};
 
 export default function Home({}: Props) {
   return (
-    <div className="min-h-full">
+    <div className="h-dvh">
       <HeroSection />
     </div>
   );

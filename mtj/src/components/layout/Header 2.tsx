@@ -50,15 +50,13 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
             </NavLink>
           </>
         )}
-        <NavLink to="/login">
-          <Button
-            size="icon"
-            variant="ghost"
-            className="ml-3 mr-5 bg-secondary p-2 text-black md:hidden"
-          >
-            <UserCircleIcon />
-          </Button>
-        </NavLink>
+        <Button
+          size="icon"
+          variant="ghost"
+          className="ml-3 mr-5 bg-secondary p-2 text-black md:hidden"
+        >
+          <UserCircleIcon />
+        </Button>
       </div>
     </div>
   );

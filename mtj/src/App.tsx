@@ -11,6 +11,7 @@ import MarketPage from "@/pages/dashboard/market/MarketPage";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
+import ForgotPasswordPage from "@/pages/auth/ResetPassword";
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -29,6 +30,7 @@ const App: React.FC = () => {
           <Route index element={<Home />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />
+          <Route path="reset" element= {<ForgotPasswordPage />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="journal" element={<JournalPage />} />
           <Route path="news" element={<NewsPage />} />

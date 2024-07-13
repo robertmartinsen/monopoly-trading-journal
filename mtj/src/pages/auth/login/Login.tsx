@@ -124,11 +124,11 @@ export default function LoginPage() {
                   </div>
                 </div>
               </div>
-              <div className="mt-2 flex justify-end">
+              <NavLink to="/reset" className="mt-2 flex justify-end">
                 <Button className="text-xs text-red-600">
                   <NavLink to="/resetPassword">Forgot password? </NavLink>
                 </Button>
-              </div>
+              </NavLink>
 
               {error && <p className="text-red-500">{error}</p>}
               <div className="mt-4 flex space-x-5 pb-10">

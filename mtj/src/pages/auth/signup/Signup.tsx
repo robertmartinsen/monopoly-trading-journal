@@ -1,15 +1,19 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authImage from "@/assets/auth.svg";
 import Logo from "@/assets/logo.svg";
 import Google from "@/assets/google.svg";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/Button";
-import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider} from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { auth } from "@/firebase/firebase";
-import { validateEmail, validatePassword } from "@/utils/validation.ts";
+import { validateEmail, validatePassword } from "@/utils/validation";
 
-export default function SignupPage() {
+const SignupPage: React.FC = () => {
   const [focusedInput, setFocusedInput] = useState<string>("email");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -17,7 +21,9 @@ export default function SignupPage() {
   const [error, setError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
-  const [reapeatPasswordError, setRepeatPasswordError] = useState<string | null>(null)
+  const [repeatPasswordError, setRepeatPasswordError] = useState<string | null>(
+    null,
+  );
   const navigate = useNavigate();
 
   const handleFocus = (input: string) => {
@@ -27,16 +33,21 @@ export default function SignupPage() {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const emailValidationError = validateEmail(email)
-    const passwordValidationError = validatePassword(password)
-    const repeatPasswordValidationError = password !== repeatPassword ? "passwords do not match" : null;
-   
+    const emailValidationError = validateEmail(email);
+    const passwordValidationError = validatePassword(password);
+    const repeatPasswordValidationError =
+      password !== repeatPassword ? "Passwords do not match" : null;
+
     setEmailError(emailValidationError);
     setPasswordError(passwordValidationError);
     setRepeatPasswordError(repeatPasswordValidationError);
 
-    if (emailValidationError || passwordValidationError || repeatPasswordValidationError) {
-      return
+    if (
+      emailValidationError ||
+      passwordValidationError ||
+      repeatPasswordValidationError
+    ) {
+      return;
     }
 
     try {
@@ -45,28 +56,29 @@ export default function SignupPage() {
     } catch (error: any) {
       switch (error.code) {
         case "auth/email-already-in-use":
-        setError("Email already in use");
-        break;
+          setError("Email already in use");
+          break;
         case "auth/invalid-email":
-        setError("Invalid email address");
-        break;
+          setError("Invalid email address");
+          break;
         default:
           setError("An unknown error occurred");
       }
     }
+  };
 
-    const handleGoogleSignIn = async () => {
-      const provider = new GoogleAuthProvider();
-      try {
-        await signInWithPopup(auth, provider);
-        navigate("/dashboard");
-      } catch(error) {
-        if (error instanceof Error) {
-          setError(error.message)
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      navigate("/dashboard");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
       } else {
-        setError("An uknown error occurred")
+        setError("An unknown error occurred");
       }
-    } 
+    }
   };
 
   return (
@@ -117,7 +129,9 @@ export default function SignupPage() {
                       onChange={(e) => setPassword(e.target.value)}
                       onFocus={() => handleFocus("password")}
                     />
-                    {passwordError && <p className="text-red-500">{passwordError}</p>}
+                    {passwordError && (
+                      <p className="text-red-500">{passwordError}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -135,7 +149,9 @@ export default function SignupPage() {
                       onChange={(e) => setRepeatPassword(e.target.value)}
                       onFocus={() => handleFocus("r-password")}
                     />
-                    {reapeatPasswordError && <p className="text-red-500">{reapeatPasswordError}</p>}
+                    {repeatPasswordError && (
+                      <p className="text-red-500">{repeatPasswordError}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -163,7 +179,10 @@ export default function SignupPage() {
               <hr />
             </div>
             <div className="pb-10">
-              <Button onClick={handleGoogleSignIn} className="mt-5 flex w-full items-center justify-center border bg-gray-200 text-sm font-semibold text-black hover:bg-gray-50">
+              <Button
+                onClick={handleGoogleSignIn}
+                className="mt-5 flex w-full items-center justify-center border bg-gray-200 text-sm font-semibold text-black hover:bg-gray-50"
+              >
                 <img src={Google} className="mr-3 w-8" alt="Google" />
                 Sign up with Google
               </Button>
@@ -173,5 +192,6 @@ export default function SignupPage() {
       </div>
     </section>
   );
-}
-}
+};
+
+export default SignupPage;

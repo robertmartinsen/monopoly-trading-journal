@@ -14,7 +14,7 @@ export function HeroSection() {
           At Monopoly Trading Journal, we're on a mission to provide the tools and a journal to
           help traders on their trading journey.
         </p>
-        <p className="">Create an account today for FREE.</p>
+        <p>Create an account today for FREE.</p>
         <div className="mt-10 flex max-w-full gap-x-6 text-center">
           <Button variant="light" className="font-sans font-bold text-gray-20">
             Create Account
