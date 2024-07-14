@@ -1,5 +1,6 @@
 import { Button } from "@/components/Button";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
+import { NavLink } from "react-router-dom";
 
 export function HeroSection() {
   return (
@@ -19,14 +20,14 @@ export function HeroSection() {
           <Button variant="light" className="font-sans font-bold text-gray-20">
             Create Account
           </Button>
-          <a className="inline-flex items-center gap-x-1" href="">
+          <NavLink className="inline-flex items-center gap-x-1" to="/login">
             <div>
               <span className="trucante max-w-full">Sign in</span>
             </div>
             <div className="h-4 w-4">
               <ChevronRightIcon />
             </div>
-          </a>
+          </NavLink>
         </div>
       </div>
     </div>
