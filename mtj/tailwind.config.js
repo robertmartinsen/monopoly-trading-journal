@@ -15,9 +15,9 @@ module.exports = {
         "primary-300": "#00316e",
         "primary-400": "#00224b",
         "primary-500": "#001b3a",
-        "secondary-100": "#ffd700",
-        "secondary-200": "#ffffe0",
-        "secondary-300": "#DAA520",
+        "secondary-100": "#0096FF",
+        "secondary-200": "#6495ED",
+        "secondary-300": "#89CFF0",
         secondary: {
           DEFAULT: colors.neutral[200],
           hover: colors.neutral[300],

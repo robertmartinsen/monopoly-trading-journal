@@ -1,9 +1,5 @@
 type Props = {};
 
 export default function Dasboard({}: Props) {
-  return (
-    <div className="min-h-full">
-      Dashboard
-    </div>
-  );
+  return <div className="h-dvh">Dashboard</div>;
 }

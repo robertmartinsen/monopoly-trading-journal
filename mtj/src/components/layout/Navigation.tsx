@@ -14,7 +14,7 @@ import { twMerge } from "tailwind-merge";
 export function Nav() {
   return (
     <>
-      <aside className="scrollbar-hidden lg:flex sticky flex h-screen flex-col overflow-y-auto bg-white pl-2 pr-4 pt-5 xs:hidden sm:hidden md:hidden">
+      <aside className="scrollbar-hidden lg:flex sticky flex flex-col overflow-y-auto bg-white pl-2 pr-4 pt-5 xs:hidden sm:hidden md:hidden">
         <LargeNavItem Icon={ComputerDesktopIcon} title="Dashboard" url="/" />
         <LargeNavItem Icon={BookOpenIcon} title="Journal" url="/journal" />
         <LargeNavItem

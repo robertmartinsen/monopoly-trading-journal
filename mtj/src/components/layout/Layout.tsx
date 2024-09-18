@@ -12,9 +12,12 @@ export const Layout: React.FC<LayoutProps> = ({ user }) => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header user={user} />
-      <main className="p-4">
-        <Outlet />
-      </main>
+      <div className="flex flex-grow">
+        {user && <Nav />}
+        <main className="flex-grow p-4">
+          <Outlet />
+        </main>
+      </div>
       <footer className="bg-white p-4 text-center">Footer Content</footer>
     </div>
   );

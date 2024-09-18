@@ -28,7 +28,7 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
       <div className="flex">
         {user ? (
           <Button
-            className="mr-3 text-black xs:hidden sm:hidden md:flex lg:flex"
+            className="mr-3 bg-red-600 text-white xs:hidden sm:hidden md:flex lg:flex"
             onClick={handleSignOut}
           >
             Sign Out
